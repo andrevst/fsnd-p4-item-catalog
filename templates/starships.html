@@ -1,0 +1,14 @@
+{% extends "main.html" %}
+{% block content %}
+<h1>Starships Catalog</h1>
+<section>
+  {% for starship in starships %}
+  <div>
+    <h3>{{ starship.name }}</h3>
+    <h4>{{ starship.category }}</h4>
+    <p>{{ starship.crew }}</p>
+    <div>{{ starship.description}}</div>
+  </div>
+  {% endfor %}
+</section>
+{% endblock %}
