@@ -18,11 +18,10 @@ Base = declarative_base()
 
 class Starships(Base):
     
-    __tablename__ = 'starships'
+    __tablename__ = 'starship'
 
     id = Column(Integer, primary_key = True) 
     name = Column(String(80), nullable = False)
-    crew = Column(integer(8))
     description = Column(String(250))
     category = Column(String(100), nullable=False)
         
@@ -33,12 +32,11 @@ class Starships(Base):
         return {
             'id': self.id,
             'name': self.name,
-            'crew': self.crew,
             'description': self.description,
             'category': self.category,
             
         }
 
-engine = create_engine('sqlite:///starfleet.db')
+engine = create_engine('sqlite:///fleet.db')
 
 Base.metadata.create_all(engine)
