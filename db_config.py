@@ -26,6 +26,19 @@ class Starships(Base):
     description = Column(String(250))
     category = Column(String(100), nullable=False)
         
+#serialize function to be able to send JSON objects 
+    @property
+    def serialize(self):
+
+        return {
+            'id': self.id,
+            'name': self.name,
+            'crew': self.crew,
+            'description': self.description,
+            'category': self.category,
+            
+        }
+
 engine = create_engine('sqlite:///starfleet.db')
 
 Base.metadata.create_all(engine)
