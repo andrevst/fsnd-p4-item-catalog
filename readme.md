@@ -12,6 +12,20 @@ This application provides a list of items within a variety of categories as well
 
 ## Development
 
+### Objectives
+
+- [ ] Implement a database structure
+- [ ] Implement basic app to connect with the database
+- [ ] Implement Route to consult the tables
+- [ ] Implement Route to consult add data on tables
+- [ ] Implement Route to consult edit data on tables
+- [ ] Implement Route to consult delete data on tables
+- [ ] Create templates to wirk with the routes
+- [ ] add Style to it
+- [ ] create Secure Login with Google
+- [ ] Make the routes Secure
+- [ ] Create Logout
+
 ## How to run
 
 - Download [Vagrant](https://www.vagrantup.com/downloads.html) and install.
