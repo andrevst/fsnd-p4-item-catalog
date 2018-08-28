@@ -9,6 +9,7 @@
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='masonry.css') }}">
 	</head>
 	<body>
+    {% include "header.html" %}
 		<section class="section">
 			{% block content %}
 			{% endblock %}
