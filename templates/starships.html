@@ -1,16 +1,26 @@
 {% extends "main.html" %}
 {% block content %}
-<h1>Starships Catalog</h1>
-<section>
-  <a href ='{{url_for('newShip')}}'>Add Starship</a>
+
+  <h1 class="title">Starships Catalog</h1>
+  
+<div class="container">
+  <div class="masonry">
   {% for starship in starships %}
-  <div>
-    <h3>{{ starship.name }}</h3>
-    <h4>{{ starship.category }}</h4>
-    <div>{{ starship.description}}</div>
-    <a href='{{url_for('editShip', ship_id = starship.id) }}'>Edit</a>
-    <a href='{{url_for('deleteShip', ship_id = starship.id) }}'>Delete</a>
-  </div>
+    <div class="item">
+      <div class="card">
+        <div class="card-content">
+          <div class="media-content">
+            <h3 class="title is-size-5-desktop is-size-4-tablet is-size-6-mobile">{{ starship.name }}</h3>
+            <h4 class="subtitle is-size-6-desktop is-size-6-tablet is-size-7-mobile">{{ starship.category }}</h4>
+            <div class="content is-size-6 has-text-justified has-text-weight-light">{{ starship.description}}</div>
+            <a class="button is-info" href='{{url_for('editShip', ship_id = starship.id) }}'>Edit</a>
+            <a class="button is-danger" href='{{url_for('deleteShip', ship_id = starship.id) }}'>Delete</a>
+          </div>
+        </div>
+      </div>
+    </div>
   {% endfor %}
-</section>
+  </div>
+  <a class="button is-primary" href ='{{url_for('newShip')}}'>Add Starship</a>
+</div>
 {% endblock %}
