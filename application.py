@@ -98,6 +98,12 @@ def starshipsJSON():
     starships = session.query(Starships).all()
     return jsonify(Starships=[i.serialize for i in starships])
 
+#Ship data JSON
+
+@app.route('/starships/<int:ship_id>/JSON')
+def starshipJSON(ship_id):
+    ship = session.query(Starships).filter_by(id=ship_id).one()
+    return jsonify(Starships=ship.serialize)
     
 if __name__ == '__main__':
   app.debug = True
