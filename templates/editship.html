@@ -1,0 +1,20 @@
+{% extends "main.html" %}
+{% block content %}
+<h1> New Starship register </h1>
+<section>
+  <div>
+    <form action="{{ url_for('editShip', ship_id=ship_id)}}" method = 'post'>
+      <div>
+        <label>Name:</label>
+        <input type ='text' size='30' name='name' placeholder = '{{ ship.name }}' value = '{{ ship.name }}'>
+        <label>Description:</label>
+        <textarea name = 'description' rows='4' cols='40' placeholder = '{{ ship.description }}'>{{ ship.description }}</textarea>
+        <label>Category:</label>
+        <input type = 'text' size = '8' name='category' placeholder = '{{ ship.category }}' value = '{{ ship.category }}'>
+      </div>
+      <input type='submit' value='Save'>
+      <a href = '{{url_for('starshipsCatalog')}}'> Cancel </a>
+    </form>
+  </div>
+</section>
+{% endblock %}

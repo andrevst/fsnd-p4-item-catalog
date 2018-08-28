@@ -6,13 +6,14 @@
     <form action="{{ url_for('newShip')}}" method = 'post'>
       <div>
         <label>Name:</label>
-        <input type ='text' size='30' name='name' required>
+        <input type ='text' size='30' name='name'>
         <label>Description:</label>
-        <textarea name = 'description' rows='5' cols='40' required></textarea>
+        <textarea name = 'description' rows='5' cols='40'></textarea>
         <label>Category:</label>
-        <input type = 'text' size = '8' name='category' required>
+        <input type = 'text' size = '8' name='category'>
       </div>
       <input type='submit' value='Create'>
+      <a href = '{{url_for('starshipsCatalog')}}'> Cancel </a>
     </form>
   </div>
 </section>

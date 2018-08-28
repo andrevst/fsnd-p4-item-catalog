@@ -8,6 +8,7 @@
     <h3>{{ starship.name }}</h3>
     <h4>{{ starship.category }}</h4>
     <div>{{ starship.description}}</div>
+    <a href='{{url_for('editShip', ship_id = starship.id) }}'>Edit</a>
   </div>
   {% endfor %}
 </section>
