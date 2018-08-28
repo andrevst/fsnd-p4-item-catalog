@@ -1,8 +1,10 @@
 {% extends "main.html" %}
 {% block content %}
-
-  <h1 class="title">Starships Catalog</h1>
-  
+<div class="container has-text-centered">
+  <a class="button is-primary is-large" href ='{{url_for('newShip')}}'>Add Starship</a>
+  <br>
+  <br>
+</div>
 <div class="container">
   <div class="masonry">
   {% for starship in starships %}
@@ -21,6 +23,6 @@
     </div>
   {% endfor %}
   </div>
-  <a class="button is-primary" href ='{{url_for('newShip')}}'>Add Starship</a>
 </div>
+<hr>
 {% endblock %}
