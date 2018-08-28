@@ -2,11 +2,11 @@
 {% block content %}
 <h1>Starships Catalog</h1>
 <section>
+  <a href ='{{url_for('newShip')}}'>Add Starship</a>
   {% for starship in starships %}
   <div>
     <h3>{{ starship.name }}</h3>
     <h4>{{ starship.category }}</h4>
-    <p>{{ starship.crew }}</p>
     <div>{{ starship.description}}</div>
   </div>
   {% endfor %}
