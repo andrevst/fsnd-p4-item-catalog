@@ -1,20 +1,27 @@
 {% extends "main.html" %}
 {% block content %}
-<h1> New Starship register </h1>
-<section>
-  <div>
-    <form action="{{ url_for('newShip')}}" method = 'post'>
-      <div>
-        <label>Name:</label>
-        <input type ='text' size='30' name='name'>
-        <label>Description:</label>
-        <textarea name = 'description' rows='5' cols='40'></textarea>
-        <label>Category:</label>
-        <input type = 'text' size = '8' name='category'>
+<div class="container">
+<h2 class="subtitle"> New Starship register </h2>
+  <form action="{{ url_for('newShip')}}" method = 'post'>
+    <div class="field">
+      <label class="label">Name:</label>
+      <div class="control">
+        <input class="input" type ='text' size='30' name='name'>
       </div>
-      <input type='submit' value='Create'>
-      <a href = '{{url_for('starshipsCatalog')}}'> Cancel </a>
-    </form>
-  </div>
-</section>
+    </div>
+    <div class="field">
+      <label class="label">Description:</label>
+      <div class="control">
+        <textarea class="textarea" name = 'description' rows='4' cols='40'></textarea>
+      </div>
+    </div>
+    <div class="field">
+      <label class="label">Category:</label>
+      <div class="control">
+        <input class="input" type = 'text' size = '8' name='category'>
+      </div>
+    </div>
+    <input class="button is-success" class="textarea" type='submit' value='Save'>
+    <a class="button is-danger" href = '{{url_for('starshipsCatalog')}}'> Cancel </a>
+</div>
 {% endblock %}
