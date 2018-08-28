@@ -30,7 +30,9 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 #Routes
-# main page
+#CRUD Functions
+
+#main page (Read all ships)
 
 @app.route('/')
 @app.route('/starships/')
@@ -43,7 +45,9 @@ def starshipsCatalog():
 @app.route('/starships/new/', methods=['GET', 'POST'])
 def newShip():
     if request.method == 'POST':
-        newShip = Starships(name=request.form['name'], description=request.form['description'], category=request.form['category'])
+        newShip = Starships(name=request.form['name'], 
+                            description=request.form['description'], 
+                            category=request.form['category'])
         session.add(newShip)
         session.commit()
         flash("New starship added!")
@@ -51,7 +55,7 @@ def newShip():
     else:
         return render_template('newship.html')
 
-# Edit a ship
+# Edit (Update) a ship
 
 @app.route('/starships/<int:ship_id>/edit', methods=['GET', 'POST'])
 def editShip(ship_id):
@@ -68,8 +72,23 @@ def editShip(ship_id):
         flash("Starship edited!")
         return redirect(url_for('starshipsCatalog'))
     else:
-        return render_template('editship.html', ship_id=ship_id, ship=editedShip)
+        return render_template('editship.html', ship_id=ship_id, 
+                               ship=editedShip)
 
+#Delete Ship
+
+@app.route('/starships/<int:ship_id>/delete/', methods=['GET', 'POST'])
+def deleteShip(ship_id):
+    deletedShip = session.query(Starships).filter_by(id=ship_id).one()
+    if request.method == 'POST':
+        session.delete(deletedShip)
+        session.commit()
+        flash("Starship deleted!")
+        return redirect(url_for('starshipsCatalog'))
+    else:
+        return render_template('deleteship.html', ship=deletedShip) 
+
+#End of CRUD functions
     
 if __name__ == '__main__':
   app.debug = True

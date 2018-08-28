@@ -1,0 +1,10 @@
+{% extends "main.html" %}
+{% block content %}
+<h1> Are you sure you want to delete {{ship.name}}? </h1>
+<section>
+  <form action="{{ url_for('deleteShip', ship_id=ship.id)}}" method = 'post'>
+    <input type='submit', value = 'Delete'>
+    <a href = '{{url_for('starshipsCatalog')}}'> Cancel </a>
+  </form>
+</section>
+{% endblock %}

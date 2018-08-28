@@ -1,6 +1,6 @@
 {% extends "main.html" %}
 {% block content %}
-<h1> New Starship register </h1>
+<h1> Edit {{ship.name}} </h1>
 <section>
   <div>
     <form action="{{ url_for('editShip', ship_id=ship_id)}}" method = 'post'>

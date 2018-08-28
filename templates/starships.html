@@ -9,6 +9,7 @@
     <h4>{{ starship.category }}</h4>
     <div>{{ starship.description}}</div>
     <a href='{{url_for('editShip', ship_id = starship.id) }}'>Edit</a>
+    <a href='{{url_for('deleteShip', ship_id = starship.id) }}'>Delete</a>
   </div>
   {% endfor %}
 </section>
