@@ -89,6 +89,15 @@ def deleteShip(ship_id):
         return render_template('deleteship.html', ship=deletedShip) 
 
 #End of CRUD functions
+#JSON API ENDPOINT
+
+#All ships data JSON
+
+@app.route('/starships/JSON')
+def starshipsJSON():
+    starships = session.query(Starships).all()
+    return jsonify(Starships=[i.serialize for i in starships])
+
     
 if __name__ == '__main__':
   app.debug = True
