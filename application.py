@@ -12,8 +12,7 @@ from sqlalchemy.orm import sessionmaker
 #import Database
 from db_config import Base, Starships
 
-import random
-import string
+import random, string
 import httplib2
 import json
 import requests
@@ -28,6 +27,15 @@ engine = create_engine('sqlite:///fleet.db?check_same_thread=False')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
+
+#Login and security
+#anti-forgery state token
+@app.route('/starships/login')
+def showLogin():
+    state = ''.join(random.choice(string.ascii_uppercase + string.digits)
+                    for x in xrange(32))
+    login_session['state'] = state
+    return "The current session state is %s" % login_session['state']
 
 #Routes
 #CRUD Functions
