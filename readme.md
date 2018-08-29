@@ -28,11 +28,34 @@ This application provides a list of items within a variety of categories as well
 
 ## How to run
 
-- Download [Vagrant](https://www.vagrantup.com/downloads.html) and install.
-- Download [Virtual Box 5.1.x](https://www.virtualbox.org/wiki/Download_Old_Builds_5_1) and install.
-- Fork and Clone or Download [Udacity's Linux-based virtual machine](https://github.com/udacity/fullstack-nanodegree-vm) configuration
-- 
- - To start working on the project run the following commands from the terminal in the folder where your vagrant is installed in:
-   - ```vagrant up``` to start up the VM.
-   - ```vagrant ssh``` to log into the VM.
-   - ```cd /vagrant``` to change to your vagrant directory.
+### PreRequisites
+ - [Python ~2.7](https://www.python.org/)
+ - [Vagrant](https://www.vagrantup.com/)
+ - [VirtualBox](https://www.virtualbox.org/)
+ 
+### Setup Project:
+
+1. Download [Vagrant](https://www.vagrantup.com/downloads.html) and install.
+2. Download [Virtual Box 5.1.x](https://www.virtualbox.org/wiki/Download_Old_Builds_5_1) and install.
+3. Fork and Clone or Download [Udacity's Linux-based virtual machine](https://github.com/udacity/fullstack-nanodegree-vm) configuration
+4. Find the catalog folder and replace it with the content of this current repository, by either downloading or cloning it from [Here](https://github.com/andrevst/fsnd-p4-item-catalog).
+
+#### Launch Project
+1. Launch the Vagrant VM using command: ```$ vagrant up```
+2. Run your application within the VM: ```$ python /vagrant/catalog/main.py```
+3. Update your versions of Flask, _ and _ to match the one used. Use the following commands:
+
+```shell
+sudo pip install werkzeug==0.8.3
+sudo pip install flask==0.9
+sudo pip install Flask-Login==0.1.3
+```
+
+4. Access and test your application by visiting [http://localhost:5000](http://localhost:5000).
+
+## Inspirational work from other students
+
+[sagarchoudhary96](https://github.com/sagarchoudhary96/P5-Item-Catalog)
+[ddavignon](https://github.com/ddavignon/item-catalog)
+
+Udacity [ud330](https://github.com/udacity/ud330) was a great help on this.
