@@ -133,6 +133,7 @@ def gconnect():
     flash("you are now logged in as %s" % login_session['username'])
     print "done! %s" % data
     return output
+    
 
 #Disconnect from Google
 
@@ -171,7 +172,17 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
 
-
+#Disconnect
+@app.route('/disconnect')
+@app.route('/starships/disconnect')
+def disconnect():
+    if 'username' not in login_session:
+        print "You were not logged in"
+        flash("You were not logged in")
+    else:
+        gdisconnect()
+    return redirect(url_for('starshipsCatalog'))
+        
 #Routes
 #CRUD Functions
 
@@ -192,16 +203,17 @@ def starshipsCatalog():
 def newShip():
     if 'username' not in login_session:
         return redirect('/login')
-    if request.method == 'POST':
-        newShip = Starships(name=request.form['name'], 
-                            description=request.form['description'], 
-                            category=request.form['category'])
-        session.add(newShip)
-        session.commit()
-        flash("New starship added!")
-        return redirect(url_for('starshipsCatalog'))
     else:
-        return render_template('newship.html')
+        if request.method == 'POST':
+            newShip = Starships(name=request.form['name'], 
+                                description=request.form['description'], 
+                                category=request.form['category'])
+            session.add(newShip)
+            session.commit()
+            flash("New starship added!")
+            return redirect(url_for('starshipsCatalog'))
+        else:
+            return render_template('newship.html')
 
 # Edit (Update) a ship
 
@@ -209,21 +221,22 @@ def newShip():
 def editShip(ship_id):
     if 'username' not in login_session:
         return redirect('/login')
-    editedShip = session.query(Starships).filter_by(id=ship_id).one()
-    if request.method == 'POST':
-        if request.form['name']:
-            editedShip.name = request.form['name']
-        if request.form['description']:
-            editedShip.description = request.form['description']
-        if request.form['category']:
-            editedShip.price = request.form['category']
-        session.add(editedShip)
-        session.commit()
-        flash("Starship edited!")
-        return redirect(url_for('starshipsCatalog'))
     else:
-        return render_template('editship.html', ship_id=ship_id, 
-                               ship=editedShip)
+        editedShip = session.query(Starships).filter_by(id=ship_id).one()
+        if request.method == 'POST':
+            if request.form['name']:
+                editedShip.name = request.form['name']
+            if request.form['description']:
+                editedShip.description = request.form['description']
+            if request.form['category']:
+                editedShip.price = request.form['category']
+            session.add(editedShip)
+            session.commit()
+            flash("Starship edited!")
+            return redirect(url_for('starshipsCatalog'))
+        else:
+            return render_template('editship.html', ship_id=ship_id, 
+                                   ship=editedShip)
 
 #Delete Ship
 
@@ -231,14 +244,15 @@ def editShip(ship_id):
 def deleteShip(ship_id):
     if 'username' not in login_session:
         return redirect('/login')
-    deletedShip = session.query(Starships).filter_by(id=ship_id).one()
-    if request.method == 'POST':
-        session.delete(deletedShip)
-        session.commit()
-        flash("Starship deleted!")
-        return redirect(url_for('starshipsCatalog'))
     else:
-        return render_template('deleteship.html', ship=deletedShip) 
+        deletedShip = session.query(Starships).filter_by(id=ship_id).one()
+        if request.method == 'POST':
+            session.delete(deletedShip)
+            session.commit()
+            flash("Starship deleted!")
+            return redirect(url_for('starshipsCatalog'))
+        else:
+            return render_template('deleteship.html', ship=deletedShip) 
 
 #End of CRUD functions
 #JSON API ENDPOINT
