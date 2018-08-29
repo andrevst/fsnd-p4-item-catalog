@@ -4,6 +4,16 @@
       <h1 class="title is-size-4 navbar-item"><a class="has-text-white" href="{{url_for('starshipsCatalog')}}"><i class="fas fa-space-shuttle"></i> Starships Catalog</a></h1>
   	</div>
     <div class="navbar-end">
+     <div class="navbar-item">
+       <div class="field is-grouped">
+         <p class="control">
+          {%if 'username' not in session %}
+          <a class="button is-primary is-inverted is-outlined" href="{{url_for('showLogin')}}">Login </a>
+          {% else %}
+    			<a class="button is-primary is-inverted is-outlined" href="{{url_for('disconnect')}}">Logout </a>
+          {% endif %}
+        </p>
+      </div>
   	</div>
   </div>
 </nav>
