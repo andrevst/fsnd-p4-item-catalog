@@ -50,7 +50,7 @@ sudo pip install flask==0.9
 sudo pip install Flask-Login==0.1.3
 ```
 
-3. Run your application within the VM: ```$ python /vagrant/catalog/application.py```
+3. Run your application within the VM on the folder where you clone this repo run: ```$ python application.py```
 4. Access and test your application by visiting [http://localhost:5000](http://localhost:5000).
 
 ## Inspirational work from other students
