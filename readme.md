@@ -16,14 +16,15 @@ This application provides a list of items within a variety of categories as well
 
 - [X] Implement a database structure
 - [X] Implement basic app to connect with the database
-- [X] Implement Route to consult the ships
-- [X] Implement Route to add data on tables
-- [X] Implement Route to edit data on tables
-- [X] Implement Route to consult delete data on tables
-- [X] add Style to it
-- [ ] create Secure Login with Google
-- [ ] Make the routes Secure
-- [ ] Create Logout
+- [X] Implement Route to consult the DB (Read option)
+- [X] Implement Route to add data on the DB (Create option)
+- [X] Implement Route to edit data on the DB (Update option)
+- [X] Implement Route to consult delete data on the DB (Delete option)
+- [X] Create templates for the Routes
+- [X] Add Style for the Routes
+- [X] create Secure Login with Google
+- [X] Make Create, Update and Delete routes Secure
+- [X] Create Logout
 
 ## How to run
 
