@@ -42,8 +42,7 @@ This application provides a list of items within a variety of categories as well
 
 #### Launch Project
 1. Launch the Vagrant VM using command: ```$ vagrant up```
-2. Run your application within the VM: ```$ python /vagrant/catalog/main.py```
-3. Update your versions of Flask, _ and _ to match the one used. Use the following commands:
+2. Update your versions of Flask, _ and _ to match the one used. Use the following commands:
 
 ```shell
 sudo pip install werkzeug==0.8.3
@@ -51,6 +50,7 @@ sudo pip install flask==0.9
 sudo pip install Flask-Login==0.1.3
 ```
 
+3. Run your application within the VM: ```$ python /vagrant/catalog/application.py```
 4. Access and test your application by visiting [http://localhost:5000](http://localhost:5000).
 
 ## Inspirational work from other students
