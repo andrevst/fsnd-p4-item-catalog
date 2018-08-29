@@ -56,6 +56,9 @@ sudo pip install Flask-Login==0.1.3
 ## Inspirational work from other students
 
 [sagarchoudhary96](https://github.com/sagarchoudhary96/P5-Item-Catalog)
+
 [ddavignon](https://github.com/ddavignon/item-catalog)
+
+[DawoonC](https://github.com/DawoonC/nd-sharables/)
 
 Udacity [ud330](https://github.com/udacity/ud330) was a great help on this.
