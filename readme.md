@@ -2,6 +2,8 @@
 
 _A Udacity Fullstack Web Developer nanodegree project._
 
+After complete [how to run](## How to run)ccess the app at [http://localhost:5000/starships](http://localhost:5000/starships)
+
 ## Objectives of the project
 
 This application provides a list of items within a variety of categories as well as provide a user registration and authentication system. Registered users will have the ability to post, edit and delete their own items. 
@@ -10,7 +12,6 @@ This application provides a list of items within a variety of categories as well
 - The project attempts to properly use HTTP methods available to work with CRUD (create, read, update and delete) operations.
 - Project [rubrick](https://review.udacity.com/#!/rubrics/5/view).
 
-## Development
 
 ### Objectives
 
@@ -51,7 +52,13 @@ sudo pip install flask==0.9
 sudo pip install Flask-Login==0.1.3
 ```
 
-4. Access and test your application by visiting [http://localhost:5000](http://localhost:5000).
+4. Install and populate the database:
+```
+python db_config.py
+python preloadShips.py
+```
+
+5. Run the application ```python application.py``` and access to test at [http://localhost:5000/starships](http://localhost:5000/starships).
 
 ## Inspirational work from other students
 
