@@ -17,6 +17,16 @@ Base = declarative_base()
 
 # DB Classes to keep data of awesome starships
 # user info
+class User(Base):
+    __tablename__ = 'user'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False)
+    email = Column(String(250), nullable=False)
+    image = Column(String(250))
+    provider = Column(String(25))
+
+
 # starship category info
 class Category(Base):
     __tablename__ = 'ship_category'
@@ -33,6 +43,8 @@ class Starships(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(80), nullable=False)
     description = Column(String(250))
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
     category = Column(String(100), ForeignKey('ship_category.name'))
     ship_category = relationship(Category)
 
