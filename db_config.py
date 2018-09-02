@@ -24,7 +24,14 @@ class User(Base):
     name = Column(String(250), nullable=False)
     email = Column(String(250), nullable=False)
     image = Column(String(250))
-    provider = Column(String(25))
+# serialize function to be able to send JSON objects
+    @property
+    def serialize(self):
+
+        return {
+            'id': self.id,
+            'email': self.email,
+        }
 
 
 # starship category info
@@ -57,6 +64,7 @@ class Starships(Base):
             'name': self.name,
             'description': self.description,
             'category': self.ship_category,
+            'user_id': self.user_id,
         }
 
 

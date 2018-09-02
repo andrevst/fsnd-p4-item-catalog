@@ -9,12 +9,13 @@ from flask import make_response
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-#import Database
-from db_config import Base, Starships
+# import Database
+from db_config import Base, Starships, User
 
-import random, string
+import random
+import string
 
-# # importing oauth
+# importing oauth
 
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
@@ -28,27 +29,29 @@ import requests
 
 app = Flask(__name__)
 
-#Google login id's
+# Google login id's
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Starship Catalog"
 
 # Create session and connect to DB
 engine = create_engine('sqlite:///fleet.db?check_same_thread=False')
-#added ?check_same_thread=False to avoid thread error
+# added ?check_same_thread=False to avoid thread error
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-#Login and security
-#anti-forgery state token
+
+# Login and security
+# anti-forgery state token
 @app.route('/login')
 @app.route('/starships/login')
 def showLogin():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in xrange(32))
     login_session['state'] = state
-    return render_template('login.html', STATE = state)
+    return render_template('login.html', STATE=state)
+
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
@@ -90,7 +93,7 @@ def gconnect():
             json.dumps("Token's user ID doesn't match given user ID."), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
-    
+
     # Verify that the access token is valid for this app.
     if result['issued_to'] != CLIENT_ID:
         response = make_response(
@@ -102,8 +105,8 @@ def gconnect():
     stored_credentials = login_session.get('credentials')
     stored_gplus_id = login_session.get('gplus_id')
     if stored_credentials is not None and gplus_id == stored_gplus_id:
-        response = make_response(json.dumps('Current user is already connected.'),
-                                 200)
+        response = make_response(
+            json.dumps('Current user is already connected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -116,63 +119,68 @@ def gconnect():
     params = {'access_token': credentials.access_token, 'alt': 'json'}
     answer = requests.get(userinfo_url, params=params)
     data = json.loads(answer.text)
-    
+
     data = answer.json()
 
     login_session['username'] = data['name']
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
 
+    user_id = getUserID(data["email"])
+    if not user_id:
+        user_id = createUser(login_session)
+    login_session['user_id'] = user_id
+
     output = ''
     output += '<h1>Welcome, '
     output += login_session['username']
     output += '!</h1>'
-    output += '<img src="'
-    output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
     flash("you are now logged in as %s" % login_session['username'])
     print "done! %s" % data
     return output
-    
 
-#Disconnect from Google
+
+# Disconnect from Google
 
 @app.route('/gdisconnect')
 def gdisconnect():
-    #makes sure user are connected
+    # makes sure user are connected
     access_token = login_session.get('access_token')
     print access_token
     if access_token is None:
-        response = make_response(json.dumps('User not connected'),401)
+        response = make_response(json.dumps('User not connected'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
     print 'In gdisconnect access token is %s', access_token
     print 'Email is: '
     print login_session['email']
-    
-    #HTTP GET to revoke current token
+
+    # HTTP GET to revoke current token
     url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % access_token
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
     print 'result is '
     print result
     if result['status'] == '200':
-        #reset user session
+        # reset user session
         del login_session['access_token']
         del login_session['gplus_id']
         del login_session['username']
         del login_session['email']
         del login_session['picture']
-        
+        del login_session['user_id']
+
         response = make_response(json.dumps('Successfully disconnected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
     else:
-        response = make_response(json.dumps('Failed to revoke token for given user.', 400))
+        response = make_response(
+            json.dumps('Failed to revoke token for given user.', 400))
         response.headers['Content-Type'] = 'application/json'
         return response
 
-#Disconnect
+
+# Disconnect
 @app.route('/disconnect')
 @app.route('/starships/disconnect')
 def disconnect():
@@ -182,32 +190,56 @@ def disconnect():
     else:
         gdisconnect()
     return redirect(url_for('starshipsCatalog'))
-        
-#Routes
-#CRUD Functions
 
-#main page (Read all ships)
 
+# User definitions
+def createUser(login_session):
+    newUser = User(name=login_session['username'], email=login_session[
+                   'email'], image=login_session['picture'])
+    session.add(newUser)
+    session.commit()
+    user = session.query(User).filter_by(email=login_session['email']).one()
+    return user.id
+
+
+def getUserInfo(user_id):
+    user = session.query(User).filter_by(id=user_id).one()
+    return user
+
+
+def getUserID(email):
+    try:
+        user = session.query(User).filter_by(email=email).one()
+        return user.id
+    except:  # noqa: E722
+        return None
+
+
+# CRUD Functions
+# main page (Read all ships)
 @app.route('/')
 @app.route('/starships/')
 def starshipsCatalog():
     if 'email' in login_session:
         print "email is:"
         print login_session['email']
+        print "user id:"
+        print login_session['user_id']
     starships = session.query(Starships).all()
     return render_template('starships.html', starships=starships)
-    
-#Create a newShip
 
+
+# Create a newShip
 @app.route('/starships/new/', methods=['GET', 'POST'])
 def newShip():
     if 'username' not in login_session:
         return redirect('/login')
     else:
         if request.method == 'POST':
-            newShip = Starships(name=request.form['name'], 
-                                description=request.form['description'], 
-                                category=request.form['category'])
+            newShip = Starships(name=request.form['name'],
+                                description=request.form['description'],
+                                category=request.form['category'],
+                                user_id=login_session['user_id'])
             session.add(newShip)
             session.commit()
             flash("New starship added!")
@@ -215,63 +247,76 @@ def newShip():
         else:
             return render_template('newship.html')
 
-# Edit (Update) a ship
 
+# Edit (Update) a ship
 @app.route('/starships/<int:ship_id>/edit', methods=['GET', 'POST'])
 def editShip(ship_id):
     if 'username' not in login_session:
         return redirect('/login')
     else:
         editedShip = session.query(Starships).filter_by(id=ship_id).one()
-        if request.method == 'POST':
-            if request.form['name']:
-                editedShip.name = request.form['name']
-            if request.form['description']:
-                editedShip.description = request.form['description']
-            if request.form['category']:
-                editedShip.price = request.form['category']
-            session.add(editedShip)
-            session.commit()
-            flash("Starship edited!")
-            return redirect(url_for('starshipsCatalog'))
+        if editedShip.user_id != login_session['user_id']:
+            return render_template('notallowed.html')
         else:
-            return render_template('editship.html', ship_id=ship_id, 
-                                   ship=editedShip)
+            if request.method == 'POST':
+                if request.form['name']:
+                    editedShip.name = request.form['name']
+                if request.form['description']:
+                    editedShip.description = request.form['description']
+                if request.form['category']:
+                    editedShip.category = request.form['category']
+                session.add(editedShip)
+                session.commit()
+                flash("Starship edited!")
+                return redirect(url_for('starshipsCatalog'))
+            else:
+                return render_template('editship.html', ship_id=ship_id,
+                                       ship=editedShip)
 
-#Delete Ship
 
+# Delete Ship
 @app.route('/starships/<int:ship_id>/delete/', methods=['GET', 'POST'])
 def deleteShip(ship_id):
     if 'username' not in login_session:
         return redirect('/login')
     else:
         deletedShip = session.query(Starships).filter_by(id=ship_id).one()
-        if request.method == 'POST':
-            session.delete(deletedShip)
-            session.commit()
-            flash("Starship deleted!")
-            return redirect(url_for('starshipsCatalog'))
+        if deletedShip.user_id != login_session['user_id']:
+            return render_template('notallowed.html')
         else:
-            return render_template('deleteship.html', ship=deletedShip) 
+            if request.method == 'POST':
+                session.delete(deletedShip)
+                session.commit()
+                flash("Starship deleted!")
+                return redirect(url_for('starshipsCatalog'))
+            else:
+                return render_template('deleteship.html', ship=deletedShip)
 
-#End of CRUD functions
-#JSON API ENDPOINT
 
-#All ships data JSON
+# End of CRUD functions
+# JSON API ENDPOINT
+# Users JSON
+@app.route('/starships/usersJSON')
+def userJSON():
+    users = session.query(User).all()
+    return jsonify(User=[i.serialize for i in users])
 
+
+# All ships data JSON
 @app.route('/starships/JSON')
 def starshipsJSON():
     starships = session.query(Starships).all()
     return jsonify(Starships=[i.serialize for i in starships])
 
-#Ship data JSON
 
+# Ship data JSON
 @app.route('/starships/<int:ship_id>/JSON')
 def starshipJSON(ship_id):
     ship = session.query(Starships).filter_by(id=ship_id).one()
     return jsonify(Starships=ship.serialize)
-    
+
+
 if __name__ == '__main__':
-  app.debug = True
-  app.secret_key = 'super_secret_key'
-  app.run(host = '0.0.0.0', port = 5000)
+    app.debug = True
+    app.secret_key = 'super_secret_key'
+    app.run(host='0.0.0.0', port=5000)
