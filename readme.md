@@ -43,8 +43,7 @@ This application provides a list of items within a variety of categories as well
 
 #### Launch Project
 1. Launch the Vagrant VM using command: ```$ vagrant up```
-2. Run your application within the VM: ```$ python /vagrant/catalog/main.py```
-3. Update your versions of Flask, _ and _ to match the one used. Use the following commands:
+2. Update your versions of Flask, _ and _ to match the one used. Use the following commands:
 
 ```shell
 sudo pip install werkzeug==0.8.3
@@ -60,9 +59,13 @@ python preloadShips.py
 
 5. Run the application ```python application.py``` and access to test at [http://localhost:5000/starships](http://localhost:5000/starships).
 
+
 ## Inspirational work from other students
 
 [sagarchoudhary96](https://github.com/sagarchoudhary96/P5-Item-Catalog)
+
 [ddavignon](https://github.com/ddavignon/item-catalog)
+
+[DawoonC](https://github.com/DawoonC/nd-sharables/)
 
 Udacity [ud330](https://github.com/udacity/ud330) was a great help on this.
