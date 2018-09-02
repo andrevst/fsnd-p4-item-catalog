@@ -2,7 +2,7 @@
 
 _A Udacity Fullstack Web Developer nanodegree project._
 
-After complete [how to run](##-How-to-run)ccess the app at [http://localhost:5000/starships](http://localhost:5000/starships)
+After complete how to run access the app at [http://localhost:5000/starships](http://localhost:5000/starships)
 
 ## Objectives of the project
 
